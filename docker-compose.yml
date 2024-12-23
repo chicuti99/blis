@@ -1,81 +1,61 @@
-version: '3.7'
+
+
+# services:
+#   database_blis: 
+#     image: mysql:8.0
+#     container_name: database_blis
+#     restart: always
+#     environment:
+#       - MYSQL_ROOT_PASSWORD=blis
+#       - MYSQL_USER=docker
+#       - MYSQL_PASSWORD=blis
+#       - MYSQL_DATABASE=mydatabase
+#     ports:
+#       - 3306:3306
+#     volumes:
+#       - mysql_data:/var/lib/mysql
+#     network_mode: host
+
+#   app:
+#     build: .
+#     container_name: blis_container
+#     volumes:
+#       - .:/usr/app
+#     network_mode: host
+    
+
+# volumes:
+#   mysql_data:
+
 
 services:
-    database_blis: 
-      image: postgres
-      container_name: database_blis
-      restart: always
-      # ports:
-      #   - 5432:5432
-      environment:
-        - POSTGRES_USER=docker
-        - POSTGRES_PASSWORD=blis
-        - POSTGRES_DB=rentx
-      volumes:
-        - pgdata:/data/postgres
-      network_mode: host
-    app:
-      build: .
-      container_name: rentx
-      # ports:
-      #   - 3333:3333
-      volumes:
-        - .:/usr/app
-      network_mode: host
+  database_blis: 
+    image: mysql:8.0
+    container_name: database_blis
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=blis
+      - MYSQL_USER=docker
+      - MYSQL_PASSWORD=blis
+      - MYSQL_DATABASE=mydatabase
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql_data:/var/lib/mysql
+    network_mode: host
+
+  app:
+    build: .
+    container_name: blis_container
+    volumes:
+      - .:/app
+      - /app/node_modules  # Assegura que as dependências node_modules sejam compartilhadas corretamente
+    ports:
+      - "3000:3000"  # Expondo a porta correta
+    network_mode: host
+    command: npm run dev  # Se não usar nodemon, este é o comando padrão
+    environment:
+      - NODE_ENV=development
 
 volumes:
-  pgdata:
-
-
-# version: '3.7'
-
-# services:
-#   database_ignite: 
-#     image: postgres
-#     container_name: database_ignite
-#     restart: always
-#     ports:
-#       - 5432:5432
-#     environment:
-#       - POSTGRES_USER=docker
-#       - POSTGRES_PASSWORD=ignite
-#       - POSTGRES_DB=rentx
-#     volumes:
-#       - pgdata:/data/postgres
-
-#   app:
-#     build: .
-#     container_name: rentx
-#     ports:
-#       - 3333:3333
-#     volumes:
-#       - .:/usr/app
-
-# volumes:
-#   pgdata:
-
-
-# version: '3.7'
-
-# services:
-#   database_ignite: 
-#     image: postgres
-#     container_name: database_ignite
-#     restart: always
-#     environment:
-#       - POSTGRES_USER=docker
-#       - POSTGRES_PASSWORD=ignite
-#       - POSTGRES_DB=rentx
-#     volumes:
-#       - pgdata:/data/postgres
-#     network_mode: host
-
-#   app:
-#     build: .
-#     container_name: rentx
-#     volumes:
-#       - .:/usr/app
-#     network_mode: host
-
-# volumes:
-#   pgdata:
+  mysql_data:

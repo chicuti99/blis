@@ -1,25 +1,30 @@
-import { inject, injectable } from "tsyringe";
 import {ICreateUserDTO} from "../../dtos/ICreateUserDTO"
-import {IUsersRepository} from "../../repositories/IUsersRepository"
-import {hash} from "bcrypt"
+import {hash} from "bcryptjs"
 import { AppError } from "../../../../errors/AppError";
+import { PrismaClient } from '@prisma/client'
 
-@injectable()
 class CreateUserUseCase{
-    constructor(@inject("UsersRepository") private usersRepository: IUsersRepository){}
 
-    async execute({driver_license,email,name,password}:ICreateUserDTO):Promise<void>{
-        const emailAlreadyExists = await this.usersRepository.findByEmail(email)
+    async execute({birthdate,email,name,password}:ICreateUserDTO):Promise<void>{
+        const prisma = new PrismaClient();
+        const emailAlreadyExists = await prisma.user.findUnique({
+            where: {email}
+        })
         if(emailAlreadyExists){
             throw new AppError("user already exists");
         }
         const passwordHash = await hash(password,8);
-        await this.usersRepository.create({
-            name,
-            email,
-            driver_license,
-            password:passwordHash
-        })
+        console.log(passwordHash,);
+        const tesste = await prisma.user.create({
+            data:{
+                birthdate:birthdate,
+                email:email,
+                name:name,
+                password:passwordHash,
+
+            }
+        });
+        console.log(tesste)
     }
 }
 

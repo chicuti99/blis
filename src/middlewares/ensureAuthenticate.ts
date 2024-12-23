@@ -1,8 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import { verify } from "jsonwebtoken";
-import { UsersRepository } from "../modules/accounts/repositories/implementations/UsersRepository";
 import { AppError } from "../errors/AppError";
+import { PrismaClient } from "@prisma/client";
+import dotenv from "dotenv";
 
+dotenv.config();
 interface IPayload{
     sub:string
 }
@@ -17,10 +19,12 @@ export async function ensureAuthenticate(request:Request,response:Response,next:
     const [, token] = authHeader.split(" ");
 
     try{
-    const {sub:user_id} = verify(token,"68830aef4dbfad181162f9251a1da51b") as IPayload;
-    const usersRepository = new UsersRepository();
-    const user =await usersRepository.findById(user_id);
-    
+    const jwtSecret = process.env.JWT_SECRET || "";
+    const {sub:user_id} = verify(token,jwtSecret) as IPayload;
+    const prisma = new PrismaClient()
+    const user = await prisma.user.findFirst({
+        where:{id: user_id}
+    })
     if(!user){
         throw new AppError("não tem esse usuario",401);
     }
@@ -28,6 +32,7 @@ export async function ensureAuthenticate(request:Request,response:Response,next:
     request.user = {
         id:user_id
     }
+
     next();
 
     }

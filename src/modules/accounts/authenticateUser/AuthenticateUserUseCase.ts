@@ -1,9 +1,10 @@
-import { inject, injectable } from "tsyringe";
-import { User } from "../entities/User";
-import { IUsersRepository } from "../repositories/IUsersRepository";
-import { compare } from "bcrypt";
+import { compare } from "bcryptjs";
 import {sign} from "jsonwebtoken"
 import { AppError } from "../../../errors/AppError";
+import { PrismaClient } from "@prisma/client";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 interface IRequest {
     email:string;
@@ -18,24 +19,29 @@ interface IResponse{
     token:string
 }
 
-@injectable()
 class AuthenticateUserUseCase{
-    constructor(@inject("UsersRepository")
-                private usersRepository:IUsersRepository){}
+
 
     async execute({email,password}:IRequest):Promise<IResponse>{
-        const user = await this.usersRepository.findByEmail(email);
+        const prisma = new PrismaClient()
+        const user = await prisma.user.findUnique({
+            where:{email}
+        });
+
+        console.log(user,email);
 
         if(!user){
             throw new AppError("usuario ou email incorreto");
         }
         const passwordMatch = await compare(password,user.password);
-
+    
         if(!passwordMatch){
             throw new AppError("usuario ou email incorreto");
         }
 
-        const token = sign({},"68830aef4dbfad181162f9251a1da51b",{
+        const jwtSecret = process.env.JWT_SECRET || "";
+
+        const token = sign({},jwtSecret,{
             subject:user.id,
             expiresIn:"1d"
         });
