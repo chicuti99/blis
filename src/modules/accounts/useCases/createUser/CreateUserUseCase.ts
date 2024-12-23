@@ -14,7 +14,6 @@ class CreateUserUseCase{
             throw new AppError("user already exists");
         }
         const passwordHash = await hash(password,8);
-        console.log(passwordHash,);
         const tesste = await prisma.user.create({
             data:{
                 birthdate:birthdate,

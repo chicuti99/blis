@@ -28,8 +28,6 @@ class AuthenticateUserUseCase{
             where:{email}
         });
 
-        console.log(user,email);
-
         if(!user){
             throw new AppError("usuario ou email incorreto");
         }

@@ -21,8 +21,7 @@ Docker
 
 
 ## Deploy
-
-crie um arquivo .env na raiz do projeto seguindo o modelo enviado por email
+use yarn ou npm para instalar as dependencias e crie um arquivo .env na raiz do projeto seguindo o modelo enviado por email,assim como o padrão de autenticação usado
 
 Para fazer o deploy desse projeto rode
 
