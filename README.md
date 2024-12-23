@@ -22,12 +22,7 @@ Docker
 
 ## Deploy
 
-crie um arquivo .env na raiz do projeto seguindo esse modelo
-
-DATABASE_URL=mysql://docker:blis@localhost:3306/mydatabase
-JWT_SECRET=68830aef4dbfad181162f9251a1da51b
-
-JWT_SECRET pode ser trocado por outro salt da preferencia,mas o DATABASE_URL tem que estar igual
+crie um arquivo .env na raiz do projeto seguindo o modelo enviado por email
 
 Para fazer o deploy desse projeto rode
 
