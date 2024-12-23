@@ -50,5 +50,5 @@ RUN npx prisma generate
 # Expõe a porta para execução da aplicação
 EXPOSE 3000
 
-# Comando para iniciar o servidor usando nodemon
+# Comando para iniciar o servidor usando nodemon e ver se dessa vez realmente vai funcionar
 CMD ["nodemon", "--watch", ".", "--exec", "npm run dev"]

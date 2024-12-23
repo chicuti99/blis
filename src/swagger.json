@@ -244,7 +244,71 @@
             }
           }
         }
+      },
+      "/countries": {
+      "get": {
+        "summary": "Get country details",
+        "description": "Fetch details of a country by its name using the RestCountries API.",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": true,
+            "description": "The name of the country to search for.",
+            "schema": {
+              "type": "string",
+              "example": "brazil"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Country details fetched successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "object",
+                        "properties": {
+                          "common": { "type": "string" },
+                          "official": { "type": "string" }
+                        }
+                      },
+                      "region": { "type": "string" },
+                      "population": { "type": "number" },
+                      "capital": {
+                        "type": "array",
+                        "items": { "type": "string" }
+                      }
+                    },
+                    "example": {
+                      "name": {
+                        "common": "Brazil",
+                        "official": "Federative Republic of Brazil"
+                      },
+                      "region": "Americas",
+                      "population": 212559409,
+                      "capital": ["Brasília"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing or invalid query parameter."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
       }
+    }
+  
     }
   }
   

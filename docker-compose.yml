@@ -1,33 +1,5 @@
 
 
-# services:
-#   database_blis: 
-#     image: mysql:8.0
-#     container_name: database_blis
-#     restart: always
-#     environment:
-#       - MYSQL_ROOT_PASSWORD=blis
-#       - MYSQL_USER=docker
-#       - MYSQL_PASSWORD=blis
-#       - MYSQL_DATABASE=mydatabase
-#     ports:
-#       - 3306:3306
-#     volumes:
-#       - mysql_data:/var/lib/mysql
-#     network_mode: host
-
-#   app:
-#     build: .
-#     container_name: blis_container
-#     volumes:
-#       - .:/usr/app
-#     network_mode: host
-    
-
-# volumes:
-#   mysql_data:
-
-
 services:
   database_blis: 
     image: mysql:8.0
@@ -49,11 +21,11 @@ services:
     container_name: blis_container
     volumes:
       - .:/app
-      - /app/node_modules  # Assegura que as dependências node_modules sejam compartilhadas corretamente
+      - /app/node_modules  
     ports:
-      - "3000:3000"  # Expondo a porta correta
+      - "3000:3000"  
     network_mode: host
-    command: npm run dev  # Se não usar nodemon, este é o comando padrão
+    command: npm run dev  
     environment:
       - NODE_ENV=development
 
